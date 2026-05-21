@@ -83,13 +83,19 @@
       display: grid;
       place-items: center;
       color: var(--muted);
+      overflow: hidden;
+      padding: 0;
       font-size: 11px;
       text-align: center;
       line-height: 1.15;
-      padding: 6px;
       flex: 0 0 auto;
     }
-
+.logo-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 18px;
+}
     .brand-text strong {
       display: block;
       font-weight: 800;
@@ -589,7 +595,9 @@
     <div class="wrap">
       <div class="topbar card">
         <div class="brand">
-          <div class="logo-slot">ЛОГО<br>ВСТАВИТЬ</div>
+          <div class="logo-slot">
+            <img src="logo.png" alt="Lunala Logo">
+</div>
           <div class="brand-text">
             <strong>Калькулятор состояния Lunala.pro</strong>
             <span>Какой личный цикл ты проживаешь?</span>
