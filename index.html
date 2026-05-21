@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#F7F2EE" />
+  <title>Калькулятор состояния Lunala.pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f2ee;
+      --surface: rgba(255, 255, 255, 0.66);
+      --surface-strong: rgba(255, 255, 255, 0.88);
+      --text: #1f2230;
+      --muted: #6e6b75;
+      --line: rgba(31, 34, 48, 0.10);
+      --pink: #e6b9c9;
+      --rose: #d9a3ba;
+      --gold: #d4b26d;
+      --blue: #21304f;
+      --blue-soft: rgba(33, 48, 79, 0.10);
+      --shadow: 0 24px 70px rgba(54, 42, 61, 0.12);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --container: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(230, 185, 201, 0.25), transparent 30%),
+        radial-gradient(circle at top right, rgba(212, 178, 109, 0.15), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(33, 48, 79, 0.08), transparent 26%),
+        linear-gradient(180deg, #fbf8f6 0%, var(--bg) 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea { font: inherit; }
+
+    .wrap {
+      width: min(100% - 32px, var(--container));
+      margin: 0 auto;
+    }
+
+    .header {
+      padding: 18px 0 10px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.52);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 10px 30px rgba(40, 34, 48, 0.06);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .logo-slot {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      border: 1.5px dashed rgba(31, 34, 48, 0.22);
+      background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(247,242,238,.72));
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+      line-height: 1.15;
+      padding: 6px;
+      flex: 0 0 auto;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-text span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(230, 185, 201, 0.12);
+      border: 1px solid rgba(230, 185, 201, 0.24);
+      color: #5b4660;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .hero {
+      padding: 18px 0 14px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.18fr 0.82fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-main {
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      inset: auto -100px -120px auto;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(230, 185, 201, 0.52) 0%, rgba(230, 185, 201, 0.14) 42%, transparent 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.70);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3 { margin: 0; letter-spacing: -0.04em; }
+
+    h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: 0.92;
+      margin-bottom: 16px;
+      max-width: 11.5ch;
+    }
+
+    .lead {
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
+      margin: 0 0 22px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-weight: 700;
+      transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease, background .18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      line-height: 1;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #eec7d4 0%, #ddadc2 35%, #d4b26d 100%);
+      color: #fff;
+      box-shadow: 0 16px 30px rgba(193, 144, 160, 0.28);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.72);
+      border: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    .hero-side {
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .mini-stat {
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.42));
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 28px;
+      letter-spacing: -0.05em;
+      margin-bottom: 4px;
+    }
+
+    .mini-stat span {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .tool {
+      padding: 24px;
+      margin: 18px 0 36px;
+    }
+
+    .tool-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .tool-header h2 {
+      font-size: clamp(26px, 3vw, 38px);
+      line-height: 1.06;
+      max-width: 18ch;
+    }
+
+    .tool-header p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 68ch;
+      line-height: 1.65;
+    }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(31, 34, 48, 0.07);
+      overflow: hidden;
+      margin: 10px 0 18px;
+    }
+
+    .progress > div {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--pink), var(--gold));
+      transition: width .25s ease;
+    }
+
+    .steps {
+      display: grid;
+      gap: 16px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.60);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+    }
+
+    .step-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(33, 48, 79, 0.06);
+      border: 1px solid rgba(33, 48, 79, 0.08);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: 0.01em;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .cat-btn {
+      appearance: none;
+      cursor: pointer;
+      border: 1px solid rgba(31, 34, 48, 0.12);
+      background: rgba(255,255,255,.76);
+      color: var(--text);
+      padding: 13px 14px;
+      border-radius: 18px;
+      text-align: left;
+      font-weight: 600;
+      line-height: 1.35;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+      min-height: 58px;
+    }
+
+    .cat-btn:hover { transform: translateY(-1px); }
+    .cat-btn.active {
+      background: linear-gradient(180deg, rgba(230,185,201,.22), rgba(255,255,255,.84));
+      border-color: rgba(230,185,201,.55);
+      box-shadow: 0 10px 26px rgba(230,185,201,.16);
+    }
+
+    .input-wrap {
+      margin-top: 12px;
+    }
+
+    .input-wrap textarea {
+      width: 100%;
+      min-height: 140px;
+      resize: vertical;
+      border-radius: 22px;
+      border: 1px solid rgba(31, 34, 48, 0.12);
+      background: rgba(255,255,255,.82);
+      padding: 16px 16px 14px;
+      color: var(--text);
+      outline: none;
+      line-height: 1.6;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+    }
+
+    .input-wrap textarea:focus {
+      border-color: rgba(230,185,201,.70);
+      box-shadow: 0 0 0 4px rgba(230,185,201,.12);
+    }
+
+    .hint {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .duration-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .duration-btn {
+      appearance: none;
+      cursor: pointer;
+      border: 1px solid rgba(31, 34, 48, 0.12);
+      background: rgba(255,255,255,.76);
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 18px;
+      text-align: center;
+      font-weight: 600;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .duration-btn.active {
+      background: rgba(33, 48, 79, 0.08);
+      border-color: rgba(33, 48, 79, 0.22);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .analysis-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(247, 242, 238, 0.54);
+      backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 24px;
+    }
+
+    .analysis-overlay.show { display: flex; }
+
+    .analysis-box {
+      width: min(560px, 100%);
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.64);
+      background: rgba(255,255,255,0.76);
+      box-shadow: 0 24px 60px rgba(33, 48, 79, 0.12);
+      padding: 26px;
+      text-align: center;
+    }
+
+    .orb {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.98) 0%, rgba(230,185,201,0.45) 40%, rgba(33,48,79,0.10) 100%);
+      box-shadow: 0 0 0 12px rgba(230,185,201,.10);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+
+    .analysis-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    .analysis-line {
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 4px 0;
+      font-size: 15px;
+    }
+
+    .result {
+      margin-top: 18px;
+      display: none;
+    }
+
+    .result.show { display: block; }
+
+    .result-card {
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.68);
+      background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.62));
+      box-shadow: 0 18px 42px rgba(33, 48, 79, 0.10);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-card::before {
+      content: "";
+      position: absolute;
+      inset: -80px auto auto -70px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(230,185,201,.30) 0%, rgba(230,185,201,0.08) 42%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .result-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .result-head h3 {
+      font-size: 22px;
+      line-height: 1.2;
+      max-width: 24ch;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(33, 48, 79, 0.08);
+      color: var(--blue);
+      border: 1px solid rgba(33, 48, 79, 0.10);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .result-text {
+      color: var(--text);
+      line-height: 1.8;
+      font-size: 16px;
+      margin: 0;
+      white-space: pre-line;
+    }
+
+    .result-meta {
+      margin-top: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .footer {
+      padding: 4px 0 30px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+    }
+
+    .fineprint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .category-grid,
+      .duration-grid {
+        grid-template-columns: 1fr;
+      }
+      .topbar {
+        border-radius: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .pill { width: 100%; }
+    }
+
+    @media (max-width: 640px) {
+      .wrap { width: min(100% - 20px, var(--container)); }
+      .hero-main,
+      .tool { padding: 18px; }
+      .btn, .cat-btn, .duration-btn { width: 100%; }
+      .result-card { padding: 18px; }
+      h1 { max-width: 100%; }
+      .lead { font-size: 15px; }
+      .analysis-title { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="wrap">
+      <div class="topbar card">
+        <div class="brand">
+          <div class="logo-slot">ЛОГО<br>ВСТАВИТЬ</div>
+          <div class="brand-text">
+            <strong>Калькулятор состояния Lunala.pro</strong>
+            <span>Какой личный цикл ты проживаешь?</span>
+          </div>
+        </div>
+        <div class="pill">Мини-астролог для мягкой самодиагностики</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <article class="card hero-main">
+            <div class="eyebrow">Светлый luxury • стекло • мягкий розово-золотой градиент</div>
+            <h1>Поймите, что важно именно сейчас</h1>
+            <p class="lead">
+              Выберите сферу, опишите ситуацию и отметьте, как давно вы находитесь в таком состоянии. Калькулятор подскажет, какой личный цикл вы проживаете, и мягко переведёт на Lunala.pro.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#tool">Начать анализ</a>
+              <a class="btn btn-secondary" href="https://lunala.pro/" target="_blank" rel="noopener">Перейти на Lunala.pro</a>
+            </div>
+            <p class="fineprint">✦ Анализ касается эмоционального состояния, отношений и жизненных периодов и не заменяет медицинскую или психологическую помощь.</p>
+          </article>
+
+          <aside class="card hero-side">
+            <div class="mini-stat">
+              <strong>6</strong>
+              <span>Мягких сфер для выбора: отношения, деньги, состояние, тревога, опора и решения.</span>
+            </div>
+            <div class="mini-stat">
+              <strong>3</strong>
+              <span>Шага до ответа: выбрать категорию, описать ситуацию и указать длительность состояния.</span>
+            </div>
+            <div class="mini-stat">
+              <strong>350 ₽</strong>
+              <span>Переход ведёт на сайт, где можно заказать прогноз на месяц по натальной карте.</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="tool" id="tool">
+      <div class="wrap">
+        <div class="card" style="padding: 24px;">
+          <div class="tool-header">
+            <div>
+              <h2>Анализ текущего периода</h2>
+              <p>Сначала выберите сферу, затем опишите ситуацию и отметьте, как давно вы живёте в этом состоянии. После этого появится ответ и кнопка перехода на Lunala.pro.</p>
+            </div>
+          </div>
+
+          <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-label">Шаг 1 · Что сейчас беспокоит сильнее всего?</div>
+              <div class="category-grid" id="categoryGrid">
+                <button class="cat-btn" data-cat="relationships">✦ Отношения и близкие</button>
+                <button class="cat-btn" data-cat="money">✦ Деньги и работа</button>
+                <button class="cat-btn" data-cat="inner">✦ Внутреннее состояние</button>
+                <button class="cat-btn" data-cat="changes">✦ Тревога и перемены</button>
+                <button class="cat-btn" data-cat="support">✦ Потеря опоры</button>
+                <button class="cat-btn" data-cat="future">✦ Будущее и решения</button>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-label">Шаг 2 · Опишите ситуацию подробнее</div>
+              <div class="input-wrap">
+                <textarea id="issueInput" placeholder="Сначала выберите сферу выше…"></textarea>
+                <div class="hint">Например: «Я запуталась в отношениях», «У меня проблемы с деньгами», «Я не понимаю, куда двигаться дальше», «Постоянная тревога и усталость».</div>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-label">Шаг 3 · Как давно вы находитесь в таком состоянии?</div>
+              <div class="duration-grid" id="durationGrid">
+                <button class="duration-btn" data-duration="days">Несколько дней</button>
+                <button class="duration-btn" data-duration="weeks">Несколько недель</button>
+                <button class="duration-btn" data-duration="months">Несколько месяцев</button>
+                <button class="duration-btn" data-duration="long">Очень давно</button>
+              </div>
+              <div class="actions">
+                <button class="btn btn-primary" id="analyzeBtn" type="button">Определить состояние</button>
+                <button class="btn btn-secondary" id="clearBtn" type="button">Сбросить</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="result" id="resultBlock">
+            <div class="result-card">
+              <div class="result-head">
+                <h3 id="resultTitle">Ответ появится здесь</h3>
+                <div class="tag" id="resultTag">Готовим анализ</div>
+              </div>
+              <p class="result-text" id="resultText">Выберите сферу, опишите ситуацию и нажмите «Определить состояние».</p>
+              <div class="result-meta" id="resultMeta"></div>
+              <div class="hero-actions" style="margin-top:16px;">
+                <button class="btn btn-secondary" id="copyBtn" type="button">Сохранить анализ</button>
+                <a class="btn btn-primary" href="https://lunala.pro/" target="_blank" rel="noopener">Перейти на Lunala.pro</a>
+              </div>
+              <p class="fineprint">Нажимая «Сохранить анализ», вы копируете текст ответа в буфер обмена и можете отправить его себе в заметки, Telegram или куда удобно.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="analysis-overlay" id="analysisOverlay" aria-hidden="true">
+    <div class="analysis-box">
+      <div class="orb"></div>
+      <div class="analysis-title">Анализируем текущий период…</div>
+      <div class="analysis-line" id="analysisLine1">Проверяем эмоциональный фон…</div>
+      <div class="analysis-line" id="analysisLine2">Сопоставляем категорию и длительность состояния…</div>
+      <div class="analysis-line" id="analysisLine3">Формируем ответ и рекомендации…</div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-inner">
+        <div>Lunala.pro · Калькулятор состояния</div>
+        <div>Интерактивный мини-астролог</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const categoryGrid = document.getElementById('categoryGrid');
+    const durationGrid = document.getElementById('durationGrid');
+    const issueInput = document.getElementById('issueInput');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const resultBlock = document.getElementById('resultBlock');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultText = document.getElementById('resultText');
+    const resultMeta = document.getElementById('resultMeta');
+    const resultTag = document.getElementById('resultTag');
+    const progressBar = document.getElementById('progressBar');
+    const overlay = document.getElementById('analysisOverlay');
+    const analysisLine1 = document.getElementById('analysisLine1');
+    const analysisLine2 = document.getElementById('analysisLine2');
+    const analysisLine3 = document.getElementById('analysisLine3');
+
+    const categories = {
+      relationships: {
+        label: 'Отношения и близкие',
+        placeholder: 'Например: «Мы отдалились друг от друга», «Я запуталась в отношениях», «После расставания не могу прийти в себя»',
+        tag: 'Личная связь'
+      },
+      money: {
+        label: 'Деньги и работа',
+        placeholder: 'Например: «У меня проблемы с деньгами», «Упали продажи», «Меня тревожит работа и доход»',
+        tag: 'Дело и доход'
+      },
+      inner: {
+        label: 'Внутреннее состояние',
+        placeholder: 'Например: «Я устала», «Нет сил», «Постоянная тревога», «Не понимаю, что со мной происходит»',
+        tag: 'Состояние'
+      },
+      changes: {
+        label: 'Тревога и перемены',
+        placeholder: 'Например: «Меня пугают перемены», «Всё нестабильно», «Страшно двигаться дальше»',
+        tag: 'Перемены'
+      },
+      support: {
+        label: 'Потеря опоры',
+        placeholder: 'Например: «Я будто потеряла направление», «Ничего не держит», «Нет внутренней опоры»',
+        tag: 'Опора'
+      },
+      future: {
+        label: 'Будущее и решения',
+        placeholder: 'Например: «Не понимаю, куда двигаться дальше», «Боюсь принять решение», «Что ждёт меня дальше?»',
+        tag: 'Выбор'
+      }
+    };
+
+    const durationLabels = {
+      days: 'несколько дней',
+      weeks: 'несколько недель',
+      months: 'несколько месяцев',
+      long: 'очень давно'
+    };
+
+    const templates = {
+      relationships: [
+        {
+          title: 'Похоже, сейчас особенно чувствительны темы близости и дистанции.',
+          body: 'В такие периоды человек острее замечает паузы, недосказанность и то, где связь перестала быть устойчивой. Иногда это не про окончательный разрыв, а про смену формата отношений и внутреннего запроса к ним.'
+        },
+        {
+          title: 'Сейчас отношения могут ощущаться как зона, где стало больше напряжения и меньше ясности.',
+          body: 'Это часто проявляется, когда старые сценарии перестают работать и становится заметно, где вам нужна честность, а где — уже границы. Подобные состояния помогают увидеть, что именно требует пересмотра.'
+        },
+        {
+          title: 'Похоже, вы проживаете период, в котором тема привязанности стала особенно заметной.',
+          body: 'То, что раньше казалось понятным, сейчас может ощущаться иначе: меньше устойчивости, больше сомнений, больше вопросов к себе и к другому человеку. Это нередко связано с изменением внутреннего цикла.'
+        }
+      ],
+      money: [
+        {
+          title: 'Сейчас может особенно остро ощущаться тема стабильности и контроля над будущим.',
+          body: 'В такие моменты часто возникает чувство, что усилий стало больше, а результат приходит медленнее или совсем не так, как раньше. Подобные состояния нередко связаны не только с внешними обстоятельствами, но и с личным астрологическим циклом, когда меняются привычные способы действий, цели и отношение к безопасности.'
+        },
+        {
+          title: 'Похоже, сейчас вы проживаете период, в котором денежные и рабочие вопросы требуют переоценки.',
+          body: 'Когда привычные схемы начинают давать сбой, это не всегда означает ошибку. Иногда период просто подсказывает, что прежняя стратегия уже не поддерживает вас так, как раньше, и её нужно пересобрать.'
+        },
+        {
+          title: 'Сейчас финансовая тема может ощущаться не как цифры, а как состояние внутреннего напряжения.',
+          body: 'Ощущение нестабильности часто усиливается, когда меняются долгосрочные влияния периода и приходится по-новому выстраивать работу, доход и опору на результат. Иногда важно не ускоряться, а понять, какая часть вашей системы просит перенастройки.'
+        }
+      ],
+      inner: [
+        {
+          title: 'Сейчас ваш внутренний фон может быть более чувствительным, чем обычно.',
+          body: 'Иногда в таких периодах человек ощущает усталость, раздражительность или эмоциональную расфокусировку, даже если внешне всё выглядит спокойно. Это может быть сигналом не слабости, а перегрузки.'
+        },
+        {
+          title: 'Похоже, вы проживаете момент, когда внутренние ресурсы требуют бережного отношения.',
+          body: 'Когда становится тяжело собираться, принимать решения или держать ритм, полезно смотреть не только на обстоятельства, но и на сам цикл, который вы сейчас проходите. Иногда состояние меняется раньше, чем меняются события.'
+        },
+        {
+          title: 'Сейчас вам может быть важно не столько ускоряться, сколько восстановить ясность.',
+          body: 'Внутренние колебания часто усиливаются, когда человек долго живёт в режиме напряжения и не замечает, как усталость начинает менять восприятие всего происходящего. Такой период лучше проживать мягко и без лишнего давления.'
+        }
+      ],
+      changes: [
+        {
+          title: 'Сейчас может особенно чувствоваться тема перемен и внутренней тревоги.',
+          body: 'Когда жизнь начинает двигаться не в привычном ритме, это нередко вызывает напряжение, даже если перемены сами по себе нужны. Важно не только смотреть на сами события, но и на то, как вы их проживаете внутри.'
+        },
+        {
+          title: 'Похоже, вы находитесь в периоде, где многое перестраивается быстрее, чем хочется.',
+          body: 'Такие этапы часто ощущаются как потеря контроля, хотя на деле это может быть переходный цикл, где старое уже не держит, а новое ещё не оформилось. Это даёт тревогу, но также открывает возможность иначе увидеть свой путь.'
+        },
+        {
+          title: 'Сейчас перемены могут восприниматься не как шанс, а как нагрузка.',
+          body: 'Это бывает, когда внутри слишком много напряжения и мало ощущения опоры. Тогда даже полезные решения кажутся тяжёлыми, а будущее — слишком неопределённым.'
+        }
+      ],
+      support: [
+        {
+          title: 'Похоже, сейчас особенно остро ощущается отсутствие внутренней опоры.',
+          body: 'Когда привычные ориентиры перестают работать, человеку становится труднее доверять своим решениям и собственному темпу. В такие моменты важно понять не только, что сломалось снаружи, но и что просит пересборки внутри.'
+        },
+        {
+          title: 'Сейчас может быть период, в котором вы будто потеряли привычное ощущение устойчивости.',
+          body: 'Это не обязательно означает кризис в прямом смысле. Иногда так ощущается этап, где прежняя конструкция себя уже не держит, а новая ещё только формируется.'
+        },
+        {
+          title: 'Похоже, вы проживаете состояние, в котором хочется просто найти точку, на которую можно опереться.',
+          body: 'Такие периоды нередко становятся полезными именно потому, что показывают: где вы держались на силе привычки, а где действительно есть ваша настоящая опора. Иногда это важнее, чем кажется.'
+        }
+      ],
+      future: [
+        {
+          title: 'Сейчас тема будущего может ощущаться особенно напряжённо и неопределённо.',
+          body: 'Когда нужно принимать решения, а внутри нет ясности, тревога легко усиливается. В такие периоды полезно не только смотреть вперёд, но и понять, какой именно этап вы сейчас проходите.'
+        },
+        {
+          title: 'Похоже, вы находитесь в моменте, где выбор имеет для вас особый вес.',
+          body: 'Если будущее кажется туманным, это не всегда означает, что путь закрыт. Иногда период просто ещё не проявил следующую ступень, и её важно не форсировать.'
+        },
+        {
+          title: 'Сейчас вы можете проживать состояние, в котором особенно остро звучит вопрос: что дальше?',
+          body: 'Такое ощущение часто возникает на стыке старого и нового цикла. В этот момент важно увидеть не только страх перед неизвестностью, но и самую честную точку, откуда начнётся следующий шаг.'
+        }
+      ]
+    };
+
+    const intros = [
+      'Сейчас важно не торопить выводы и посмотреть на состояние чуть внимательнее.',
+      'Похоже, вы находитесь в периоде, где многое просит пересборки, а не давления.',
+      'Иногда то, что ощущается как хаос, на деле показывает смену внутренней опоры.',
+      'Тема, которую вы описали, сейчас требует спокойного и точного разбора.'
+    ];
+
+    const closers = [
+      'Подобные переживания могут быть связаны с транзитами медленных планет, которые в этом году сменили знаки и постепенно меняют привычные жизненные сценарии.',
+      'Более подробно о влиянии транзитов именно на вас — сможете узнать на сайте Lunala.pro в персональном прогнозе на месяц всего за 350 ₽.',
+      'На сайте Lunala.pro вы сможете рассчитать свою натальную карту и заказать прогноз на месяц, чтобы увидеть причины текущего состояния глубже и точнее.',
+      'Если хотите понять, что именно поддерживает или расшатывает ваш период, загляните на Lunala.pro — там доступен персональный прогноз на месяц за 350 ₽.'
+    ];
+
+    let selectedCategory = null;
+    let selectedDuration = null;
+    let lastAnalysisText = '';
+
+    function updateProgress() {
+      const filled = [selectedCategory, issueInput.value.trim(), selectedDuration].filter(Boolean).length;
+      progressBar.style.width = Math.round((filled / 3) * 100) + '%';
+    }
+
+    function setCategory(cat) {
+      selectedCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.cat === cat));
+      issueInput.placeholder = categories[cat].placeholder;
+      updateProgress();
+    }
+
+    function setDuration(duration) {
+      selectedDuration = duration;
+      document.querySelectorAll('.duration-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.duration === duration));
+      updateProgress();
+    }
+
+    function randomItem(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function buildAnswer() {
+      const cat = categories[selectedCategory];
+      const sourceText = issueInput.value.trim();
+      const durationText = durationLabels[selectedDuration];
+      const intro = randomItem(intros);
+      const template = randomItem(templates[selectedCategory]);
+      const closer = randomItem(closers);
+
+      const text = `${intro}
+
+${template.title} ${template.body}
+
+Вы указали, что это состояние длится ${durationText}. Чем дольше сохраняется такой фон, тем больше это похоже не на случайность, а на этап, который постепенно меняет ваши внутренние опоры и привычные реакции.
+
+${closer}
+
+Запрос: ${sourceText}`;
+      return {
+        title: `Анализ текущего периода: ${cat.label}`,
+        tag: cat.tag,
+        text,
+        meta: `Категория: ${cat.label} · Длительность состояния: ${durationText}`
+      };
+    }
+
+    function showOverlayLines() {
+      overlay.classList.add('show');
+      analysisLine1.textContent = 'Проверяем сферу запроса…';
+      analysisLine2.textContent = 'Сопоставляем длительность состояния и выбранную тему…';
+      analysisLine3.textContent = 'Формируем мягкий текст анализа…';
+    }
+
+    function hideOverlay() {
+      overlay.classList.remove('show');
+    }
+
+    categoryGrid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.cat-btn');
+      if (!btn) return;
+      setCategory(btn.dataset.cat);
+    });
+
+    durationGrid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.duration-btn');
+      if (!btn) return;
+      setDuration(btn.dataset.duration);
+    });
+
+    issueInput.addEventListener('input', updateProgress);
+
+    analyzeBtn.addEventListener('click', () => {
+      if (!selectedCategory || !issueInput.value.trim() || !selectedDuration) {
+        resultBlock.style.display = 'block';
+        resultTitle.textContent = 'Нужно заполнить все шаги';
+        resultTag.textContent = 'Не хватает данных';
+        resultText.textContent = 'Выберите сферу, опишите ситуацию и укажите, как давно это длится.';
+        resultMeta.textContent = '';
+        return;
+      }
+
+      showOverlayLines();
+      const analysis = buildAnswer();
+      lastAnalysisText = `${analysis.title}
+
+${analysis.text}
+
+${analysis.meta}`;
+
+      setTimeout(() => {
+        hideOverlay();
+        resultBlock.classList.add('show');
+        resultTitle.textContent = analysis.title;
+        resultTag.textContent = analysis.tag;
+        resultText.textContent = analysis.text;
+        resultMeta.textContent = analysis.meta;
+        resultBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 1800);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      selectedCategory = null;
+      selectedDuration = null;
+      issueInput.value = '';
+      issueInput.placeholder = 'Сначала выберите сферу выше…';
+      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
+      progressBar.style.width = '0%';
+      resultBlock.classList.remove('show');
+      resultTitle.textContent = 'Ответ появится здесь';
+      resultTag.textContent = 'Готовим анализ';
+      resultText.textContent = 'Выберите сферу, опишите ситуацию и нажмите «Определить состояние».';
+      resultMeta.textContent = '';
+      lastAnalysisText = '';
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      if (!lastAnalysisText) return;
+      try {
+        await navigator.clipboard.writeText(lastAnalysisText);
+        copyBtn.textContent = 'Анализ скопирован';
+        setTimeout(() => copyBtn.textContent = 'Сохранить анализ', 1600);
+      } catch (err) {
+        const ta = document.createElement('textarea');
+        ta.value = lastAnalysisText;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        copyBtn.textContent = 'Анализ скопирован';
+        setTimeout(() => copyBtn.textContent = 'Сохранить анализ', 1600);
+      }
+    });
+
+    updateProgress();
+  </script>
+</body>
+</html>
